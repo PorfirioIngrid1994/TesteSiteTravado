@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScrollTrap Lab - Desafio de Automação RPA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Barra de Cabeçalho / Identificação do Laboratório -->
+  <header class="lab-header">
+    <div class="lab-brand">
+      <div class="lab-icon">⤓</div>
+      <div>
+        <h1 class="lab-title">ScrollTrap Lab</h1>
+        <p class="lab-subtitle">Ambiente de Testes de Automação & RPA (Power Automate Desktop)</p>
+      </div>
+    </div>
+    
+    <div class="lock-badge" id="lockStatusBadge" title="O scroll do body e do container está travado via overflow: hidden">
+      <span class="pulse-dot"></span>
+      <span>Trava de Scroll: ATIVA (overflow: hidden)</span>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="main-wrapper">
+    <div id="form-container">
+      
+      <div class="challenge-banner">
+        <strong>⚡ Desafio de Automação RPA:</strong> Este formulário possui altura superior à tela e está com rolagem bloqueada (<code>overflow-y: hidden</code>). O bot precisará interagir, navegar pelos campos (ex: via TAB/JavaScript/scrollIntoView) ou manipular a trava para alcançar o botão de envio no final.
+      </div>
+
+      <!-- Formulário com 10+ campos verticais -->
+      <form id="automationForm" class="automation-form" autocomplete="off" onsubmit="handleSubmit(event)">
+        
+        <!-- Campo 1: Nome Completo -->
+        <div class="form-group">
+          <label for="txtNome">
+            Nome Completo
+            <span class="tag-id">#txtNome</span>
+          </label>
+          <input 
+            type="text" 
+            id="txtNome" 
+            name="nome" 
+            placeholder="Ex: Carlos Eduardo da Silva" 
+            data-testid="input-nome"
+            required
+          >
+        </div>
+
+        <!-- Campo 2: CPF -->
+        <div class="form-group">
+          <label for="txtCpf">
+            CPF
+            <span class="tag-id">#txtCpf</span>
+          </label>
+          <input 
+            type="text" 
+            id="txtCpf" 
+            name="cpf" 
+            placeholder="000.000.000-00" 
+            data-testid="input-cpf"
+            required
+          >
+        </div>
+
+        <!-- Campo 3: E-mail -->
+        <div class="form-group">
+          <label for="txtEmail">
+            E-mail Corporativo
+            <span class="tag-id">#txtEmail</span>
+          </label>
+          <input 
+            type="email" 
+            id="txtEmail" 
+            name="email" 
+            placeholder="automacao.rpa@empresa.com.br" 
+            data-testid="input-email"
+            required
+          >
+        </div>
+
+        <!-- Campo 4: Telefone -->
+        <div class="form-group">
+          <label for="txtTelefone">
+            Telefone / WhatsApp
+            <span class="tag-id">#txtTelefone</span>
+          </label>
+          <input 
+            type="tel" 
+            id="txtTelefone" 
+            name="telefone" 
+            placeholder="(11) 98765-4321" 
+            data-testid="input-telefone"
+            required
+          >
+        </div>
+
+        <!-- Campo 5 & 6: CEP e Endereço -->
+        <div class="form-row">
+          <div class="form-group col-4">
+            <label for="txtCep">
+              CEP
+              <span class="tag-id">#txtCep</span>
+            </label>
+            <input 
+              type="text" 
+              id="txtCep" 
+              name="cep" 
+              placeholder="01001-000" 
+              data-testid="input-cep"
+              required
+            >
+          </div>
+          <div class="form-group col-8">
+            <label for="txtEndereco">
+              Endereço / Logradouro
+              <span class="tag-id">#txtEndereco</span>
+            </label>
+            <input 
+              type="text" 
+              id="txtEndereco" 
+              name="endereco" 
+              placeholder="Av. Paulista" 
+              data-testid="input-endereco"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Campo 7 & 8: Número e Complemento -->
+        <div class="form-row">
+          <div class="form-group col-4">
+            <label for="txtNumero">
+              Número
+              <span class="tag-id">#txtNumero</span>
+            </label>
+            <input 
+              type="text" 
+              id="txtNumero" 
+              name="numero" 
+              placeholder="1000" 
+              data-testid="input-numero"
+              required
+            >
+          </div>
+          <div class="form-group col-8">
+            <label for="txtComplemento">
+              Complemento
+              <span class="tag-id">#txtComplemento</span>
+            </label>
+            <input 
+              type="text" 
+              id="txtComplemento" 
+              name="complemento" 
+              placeholder="Conjunto 42, Bloco B" 
+              data-testid="input-complemento"
+            >
+          </div>
+        </div>
+
+        <!-- Campo 9: Bairro -->
+        <div class="form-group">
+          <label for="txtBairro">
+            Bairro
+            <span class="tag-id">#txtBairro</span>
+          </label>
+          <input 
+            type="text" 
+            id="txtBairro" 
+            name="bairro" 
+            placeholder="Bela Vista" 
+            data-testid="input-bairro"
+            required
+          >
+        </div>
+
+        <!-- Campo 10 & 11: Cidade e Estado -->
+        <div class="form-row">
+          <div class="form-group col-8">
+            <label for="txtCidade">
+              Cidade
+              <span class="tag-id">#txtCidade</span>
+            </label>
+            <input 
+              type="text" 
+              id="txtCidade" 
+              name="cidade" 
+              placeholder="São Paulo" 
+              data-testid="input-cidade"
+              required
+            >
+          </div>
+          <div class="form-group col-4">
+            <label for="selEstado">
+              Estado (UF)
+              <span class="tag-id">#selEstado</span>
+            </label>
+            <select id="selEstado" name="estado" data-testid="select-estado" required>
+              <option value="">Selecione...</option>
+              <option value="SP">São Paulo (SP)</option>
+              <option value="RJ">Rio de Janeiro (RJ)</option>
+              <option value="MG">Minas Gerais (MG)</option>
+              <option value="PR">Paraná (PR)</option>
+              <option value="RS">Rio Grande do Sul (RS)</option>
+              <option value="SC">Santa Catarina (SC)</option>
+              <option value="BA">Bahia (BA)</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campo 12: Observações / Dados do Bot -->
+        <div class="form-group">
+          <label for="txtObservacoes">
+            Observações / Log de Automação
+            <span class="tag-id">#txtObservacoes</span>
+          </label>
+          <textarea 
+            id="txtObservacoes" 
+            name="observacoes" 
+            placeholder="Insira notas de execução ou payload da automação..."
+            data-testid="textarea-observacoes"
+          ></textarea>
+        </div>
+
+        <!-- Botão de Envio (Ocultado/cortado pelo overflow: hidden por padrão) -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            id="btnEnviar" 
+            class="btn-submit" 
+            data-testid="button-enviar"
+          >
+            <span>Finalizar Cadastro Automatizado</span>
+            <span aria-hidden="true">➔</span>
+          </button>
+        </div>
+
+        <!-- Alerta de Sucesso (Validação para o Bot) -->
+        <div id="msgSucesso" class="submission-alert" data-testid="mensagem-sucesso">
+          ✓ <strong>Sucesso!</strong> Formulário enviado e validado com êxito pelo robô.
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const msgBox = document.getElementById('msgSucesso');
+      msgBox.classList.add('active');
+      msgBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>
